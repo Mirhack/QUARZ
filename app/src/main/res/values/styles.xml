@@ -1,0 +1,20 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+
+    <style name="BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowTranslucentNavigation">false</item>
+<!--        <item name="android:windowLightNavigationBar">true</item>-->
+<!--        <item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+
+    </style>
+</resources>
