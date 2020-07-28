@@ -56,9 +56,9 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                 } else {
                     //Copy password
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText("wifiPassword", viewState.value?.wifiPassword)
+                    val clip = ClipData.newPlainText("copiedText", viewState.value?.wifiPassword)
                     clipboard.setPrimaryClip(clip)
-                    _viewEffect.sendEvent(BottomSheetDialogViewEffect.ShowToast("Password Copied to clipboard"))
+                    _viewEffect.sendEvent(BottomSheetDialogViewEffect.ShowToast("Copied to clipboard"))
                 }
             }
         }

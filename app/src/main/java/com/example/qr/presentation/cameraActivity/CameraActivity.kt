@@ -2,8 +2,6 @@ package com.example.qr.presentation.cameraActivity
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -20,6 +18,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.qr.R
+import com.example.qr.di.cameraModule
+import com.example.qr.di.imageAnalysingModule
 import com.example.qr.extensions.savePDO
 import com.example.qr.extensions.sendEvent
 import com.example.qr.imageProcessing.ImageAnalyzer
@@ -28,17 +28,20 @@ import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogPDO
 import com.example.qr.presentation.cameraActivity.CameraActivityViewEvent.*
 import com.example.qr.presentation.cameraActivity.CameraActivityViewModel.Companion.REQUEST_CODE_PERMISSIONS
 import com.example.qr.presentation.cameraActivity.CameraActivityViewModel.Companion.REQUIRED_PERMISSIONS
-import com.example.qr.presentation.di.cameraModule
-import com.example.qr.presentation.di.imageAnalysingModule
 import com.example.qr.utils.Event
 import com.google.mlkit.vision.barcode.Barcode
 import kotlinx.android.synthetic.main.activity_camera.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import org.koin.android.ext.android.inject
 import org.koin.core.context.loadKoinModules
 import java.util.concurrent.ExecutorService
+import kotlin.coroutines.CoroutineContext
 
 
-class CameraActivity : AppCompatActivity() {
+class CameraActivity : AppCompatActivity(), CoroutineScope {
     private val viewEvent: LiveData<Event<CameraActivityViewEvent>> get() = _viewEvent
     private val _viewEvent = MutableLiveData<Event<CameraActivityViewEvent>>()
 
@@ -52,12 +55,12 @@ class CameraActivity : AppCompatActivity() {
     private val cameraSelector: CameraSelector by inject()
     private val preview: Preview by inject()
 
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        window.apply {
-//            setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-//        }
-
         setContentView(R.layout.activity_camera)
 
         loadKoinModules(listOf(imageAnalysingModule, cameraModule))
@@ -139,7 +142,7 @@ class CameraActivity : AppCompatActivity() {
         cameraProviderFuture.addListener(Runnable {
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            imageAnalyzer = ImageAnalyzer(graphic_overlay, _viewEvent)
+            imageAnalyzer = ImageAnalyzer(this, graphic_overlay, _viewEvent)
 
             imageAnalysis.setAnalyzer(cameraExecutor, imageAnalyzer!!)
 
@@ -160,9 +163,14 @@ class CameraActivity : AppCompatActivity() {
     }
 
 
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineContext.cancelChildren()
+
+    }
+
     companion object {
         private const val TAG = "CameraXBasic"
-
     }
 }
 

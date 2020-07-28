@@ -7,23 +7,25 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.lifecycle.MutableLiveData
+import com.example.qr.di.scannerModule
 import com.example.qr.extensions.sendEvent
 import com.example.qr.imageProcessing.graphics.RectangleGraphic
 import com.example.qr.presentation.cameraActivity.CameraActivityViewEvent
 import com.example.qr.presentation.cameraActivity.CameraActivityViewEvent.BarcodeScanned
 import com.example.qr.presentation.cameraActivity.CameraActivityViewModel
-import com.example.qr.presentation.di.cameraModule
-import com.example.qr.presentation.di.imageAnalysingModule
-import com.example.qr.presentation.di.scannerModule
 import com.example.qr.utils.Event
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.common.InputImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.context.loadKoinModules
 import org.koin.core.inject
-import org.koin.java.KoinJavaComponent.inject
 
 class ImageAnalyzer(
+    private val coroutineScope: CoroutineScope,
     private val graphicOverlay: GraphicOverlay,
     private val eventEmitter: MutableLiveData<Event<CameraActivityViewEvent>>
 ) : ImageAnalysis.Analyzer, KoinComponent {
@@ -61,6 +63,10 @@ class ImageAnalyzer(
                                 } ?: graphicOverlay.clear()
 
                                 eventEmitter.sendEvent(BarcodeScanned(it))
+                                coroutineScope.launch(IO) {
+                                    delay(500)
+                                    graphicOverlay.clear()
+                                }
                             }
                         } else
                             graphicOverlay.clear()

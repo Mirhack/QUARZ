@@ -1,4 +1,4 @@
-package com.example.qr.presentation.di
+package com.example.qr.di
 
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
