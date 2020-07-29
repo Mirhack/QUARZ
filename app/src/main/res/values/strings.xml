@@ -7,4 +7,11 @@
     <string name="action_copy_password">Copy password</string>
     <string name="action_copy">Copy</string>
     <string name="action_open_in_browser">Open in Browser</string>
+    <string name="phone_type_title">Phone</string>
+    <string name="url_type_title">Url</string>
+    <string name="text_type_title">Text</string>
+    <string name="wifi_type_title">WIFI</string>
+    <string name="unknown_type_title">Unknown</string>
+    <string name="action_add_to_contacts">Add to contacts</string>
+    <string name="action_call">Call</string>
 </resources>

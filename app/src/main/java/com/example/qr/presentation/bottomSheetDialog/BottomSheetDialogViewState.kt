@@ -9,6 +9,7 @@ data class BottomSheetDialogViewState(
     val wifiSsid: String,
     val wifiPassword: String,
     val url: String,
+    val phone: String,
     val androidVersionLessQ: Boolean
 )
 
@@ -17,9 +18,13 @@ sealed class BottomSheetDialogViewEvent {
     object ConnectWiFi : BottomSheetDialogViewEvent()
     object CopyToClipboard : BottomSheetDialogViewEvent()
     object OpenInBrowser : BottomSheetDialogViewEvent()
+    object AddPhoneToContacts : BottomSheetDialogViewEvent()
+    object Dial : BottomSheetDialogViewEvent()
 }
 
 sealed class BottomSheetDialogViewEffect {
     data class ShowToast(val text: String) : BottomSheetDialogViewEffect()
     data class OpenInBrowser(val url: String) : BottomSheetDialogViewEffect()
+    data class AddPhoneContact(val phone: String) : BottomSheetDialogViewEffect()
+    data class Dial(val phone: String) : BottomSheetDialogViewEffect()
 }

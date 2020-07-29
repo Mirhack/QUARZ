@@ -10,7 +10,8 @@ data class BottomSheetDialogPDO(
     val barcodeType: Int,
     val wifiSsid: String,
     val wifiPassword: String,
-    val url: String
+    val url: String,
+    val phone: String
 ) : Parcelable
 
 

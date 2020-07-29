@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.example.qr.utils.Event
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.mlkit.vision.barcode.Barcode
 import kotlinx.android.synthetic.main.bottom_sheet.*
+import kotlinx.android.synthetic.main.type_phone.*
 import kotlinx.android.synthetic.main.type_text.*
 import kotlinx.android.synthetic.main.type_url.*
 import kotlinx.android.synthetic.main.type_wifi.*
@@ -80,6 +82,15 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 url_btn_copy.clickToEvent(_viewEvent, CopyToClipboard)
                 url_btn_open_link.clickToEvent(_viewEvent, OpenInBrowser)
             }
+            Barcode.TYPE_PHONE -> {
+                bottom_sheet_fl_type_container.apply {
+                    layoutResource = R.layout.type_phone
+                    inflate()
+                }
+                phone_btn_copy.clickToEvent(_viewEvent, CopyToClipboard)
+                phone_btn_add_to_contacts.clickToEvent(_viewEvent, AddPhoneToContacts)
+                phone_btn_call.clickToEvent(_viewEvent, Dial)
+            }
         }
     }
 
@@ -106,6 +117,18 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 }
                 startActivity(intent)
             }
+            is BottomSheetDialogViewEffect.AddPhoneContact -> {
+                val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+                    type = ContactsContract.Contacts.CONTENT_TYPE
+                    putExtra(ContactsContract.Intents.Insert.PHONE, viewEffect.phone)
+                }
+                startActivity(intent)
+            }
+            is BottomSheetDialogViewEffect.Dial -> {
+                val intent =
+                    Intent(Intent.ACTION_DIAL, Uri.parse("tel:${viewEffect.phone}"))
+                startActivity(intent)
+            }
         }
     }
 
@@ -124,6 +147,9 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 }
                 Barcode.TYPE_URL -> {
                     url_address.text = viewState.url
+                }
+                Barcode.TYPE_PHONE -> {
+                    phone_number.text = viewState.phone
                 }
             }
         }

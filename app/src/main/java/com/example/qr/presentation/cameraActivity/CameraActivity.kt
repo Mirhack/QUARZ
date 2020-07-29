@@ -95,13 +95,16 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
 
     private fun getBarcodeBundle(barcode: Barcode): Bundle {
         return Bundle().savePDO(
-            BottomSheetDialogPDO(
-                barcodeText = barcode.displayValue ?: "",
-                barcodeType = barcode.valueType,
-                wifiSsid = barcode.wifi?.ssid ?: "",
-                wifiPassword = barcode.wifi?.password ?: "",
-                url = barcode.url?.url ?: ""
-            )
+            barcode.run {
+                BottomSheetDialogPDO(
+                    barcodeText = displayValue ?: "",
+                    barcodeType = valueType,
+                    wifiSsid = wifi?.ssid ?: "",
+                    wifiPassword = wifi?.password ?: "",
+                    url = url?.url ?: "",
+                    phone = phone?.number ?: ""
+                )
+            }
         )
     }
 

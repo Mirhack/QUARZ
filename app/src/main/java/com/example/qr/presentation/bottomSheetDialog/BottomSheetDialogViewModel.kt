@@ -8,12 +8,13 @@ import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.qr.R
 import com.example.qr.extensions.send
 import com.example.qr.extensions.sendEvent
 import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.*
 import com.example.qr.utils.Event
 import com.example.qr.wifiConnection.WifiConnectionManager
-import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.Barcode.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -31,21 +32,25 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
     fun processEvent(event: BottomSheetDialogViewEvent?) {
         when (event) {
             is Init -> _viewState.send(
-                BottomSheetDialogViewState(
-                    isPredefinedValue = true,
-                    barcodeText = event.pdo.barcodeText,
-                    wifiSsid = event.pdo.wifiSsid,
-                    wifiPassword = event.pdo.wifiPassword,
-                    barcodeType = event.pdo.barcodeType,
-                    barcodeTypeName = when (event.pdo.barcodeType) {
-                        Barcode.TYPE_WIFI -> "WIFI"
-                        Barcode.TYPE_TEXT -> "Text"
-                        Barcode.TYPE_URL -> "Url"
-                        else -> "Unknown"
-                    },
-                    androidVersionLessQ = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q,
-                    url = event.pdo.url
-                )
+                event.pdo.run {
+                    BottomSheetDialogViewState(
+                        isPredefinedValue = true,
+                        barcodeText = barcodeText,
+                        wifiSsid = wifiSsid,
+                        wifiPassword = wifiPassword,
+                        barcodeType = barcodeType,
+                        barcodeTypeName = when (barcodeType) {
+                            TYPE_WIFI -> context.getString(R.string.wifi_type_title)
+                            TYPE_TEXT -> context.getString(R.string.text_type_title)
+                            TYPE_URL -> context.getString(R.string.url_type_title)
+                            TYPE_PHONE -> context.getString(R.string.phone_type_title)
+                            else -> context.getString(R.string.unknown_type_title)
+                        },
+                        androidVersionLessQ = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q,
+                        url = url,
+                        phone = phone
+                    )
+                }
             )
             is ConnectWiFi -> {
                 if (viewState.value!!.androidVersionLessQ) {
@@ -60,7 +65,14 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
             is CopyToClipboard -> {
                 val clipboard =
                     context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("copiedText", viewState.value?.wifiPassword)
+                val text = when (viewState.value?.barcodeType) {
+                    TYPE_WIFI -> viewState.value?.wifiPassword ?: ""
+                    TYPE_TEXT -> viewState.value?.barcodeText ?: ""
+                    TYPE_URL -> viewState.value?.url ?: ""
+                    TYPE_PHONE -> viewState.value?.phone ?: ""
+                    else -> ""
+                }
+                val clip = ClipData.newPlainText("copiedText", text)
                 clipboard.setPrimaryClip(clip)
                 _viewEffect.sendEvent(BottomSheetDialogViewEffect.ShowToast("Copied to clipboard"))
             }
@@ -69,6 +81,16 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                     BottomSheetDialogViewEffect.OpenInBrowser(
                         viewState.value?.url ?: ""
                     )
+                )
+            }
+            is AddPhoneToContacts -> {
+                _viewEffect.sendEvent(
+                    BottomSheetDialogViewEffect.AddPhoneContact(viewState.value?.phone ?: "")
+                )
+            }
+            is Dial -> {
+                _viewEffect.sendEvent(
+                    BottomSheetDialogViewEffect.Dial(viewState.value?.phone ?: "")
                 )
             }
         }
