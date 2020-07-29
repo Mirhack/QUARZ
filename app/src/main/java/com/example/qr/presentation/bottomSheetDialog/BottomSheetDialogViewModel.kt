@@ -39,9 +39,12 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                     barcodeType = event.pdo.barcodeType,
                     barcodeTypeName = when (event.pdo.barcodeType) {
                         Barcode.TYPE_WIFI -> "WIFI"
-                        else -> "Text"
+                        Barcode.TYPE_TEXT -> "Text"
+                        Barcode.TYPE_URL -> "Url"
+                        else -> "Unknown"
                     },
-                    androidVersionLessQ = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+                    androidVersionLessQ = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q,
+                    url = event.pdo.url
                 )
             )
             is ConnectWiFi -> {
@@ -60,6 +63,13 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                 val clip = ClipData.newPlainText("copiedText", viewState.value?.wifiPassword)
                 clipboard.setPrimaryClip(clip)
                 _viewEffect.sendEvent(BottomSheetDialogViewEffect.ShowToast("Copied to clipboard"))
+            }
+            is OpenInBrowser -> {
+                _viewEffect.sendEvent(
+                    BottomSheetDialogViewEffect.OpenInBrowser(
+                        viewState.value?.url ?: ""
+                    )
+                )
             }
         }
     }

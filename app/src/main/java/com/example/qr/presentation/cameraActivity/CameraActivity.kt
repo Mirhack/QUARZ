@@ -99,7 +99,8 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
                 barcodeText = barcode.displayValue ?: "",
                 barcodeType = barcode.valueType,
                 wifiSsid = barcode.wifi?.ssid ?: "",
-                wifiPassword = barcode.wifi?.password ?: ""
+                wifiPassword = barcode.wifi?.password ?: "",
+                url = barcode.url?.url ?: ""
             )
         )
     }

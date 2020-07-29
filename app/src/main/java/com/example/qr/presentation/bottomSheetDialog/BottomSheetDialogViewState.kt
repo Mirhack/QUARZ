@@ -8,15 +8,18 @@ data class BottomSheetDialogViewState(
     val barcodeType: Int,
     val wifiSsid: String,
     val wifiPassword: String,
-    val androidVersionLessQ:Boolean
+    val url: String,
+    val androidVersionLessQ: Boolean
 )
 
 sealed class BottomSheetDialogViewEvent {
     data class Init(val pdo: BottomSheetDialogPDO) : BottomSheetDialogViewEvent()
     object ConnectWiFi : BottomSheetDialogViewEvent()
     object CopyToClipboard : BottomSheetDialogViewEvent()
+    object OpenInBrowser : BottomSheetDialogViewEvent()
 }
 
 sealed class BottomSheetDialogViewEffect {
-    data class ShowToast(val text:String):BottomSheetDialogViewEffect()
+    data class ShowToast(val text: String) : BottomSheetDialogViewEffect()
+    data class OpenInBrowser(val url: String) : BottomSheetDialogViewEffect()
 }
