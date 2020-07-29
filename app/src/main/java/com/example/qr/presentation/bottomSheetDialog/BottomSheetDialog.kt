@@ -11,10 +11,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.qr.R
+import com.example.qr.extensions.clickToEvent
 import com.example.qr.extensions.loadPDO
 import com.example.qr.extensions.sendEvent
 import com.example.qr.extensions.toVisibleOrGone
-import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.Init
+import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.*
 import com.example.qr.utils.Event
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.mlkit.vision.barcode.Barcode
@@ -35,8 +36,7 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.bottom_sheet, container, false)
-        return view
+        return inflater.inflate(R.layout.bottom_sheet, container, false)
     }
 
     override fun getTheme(): Int {
@@ -59,27 +59,15 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                     layoutResource = R.layout.type_wifi
                     inflate()
                 }
-                wifi_btn_connect.setOnClickListener {
-                    _viewEvent.sendEvent(
-                        BottomSheetDialogViewEvent.ConnectWiFi
-                    )
-                }
-                wifi_btn_copy_password.setOnClickListener {
-                    _viewEvent.sendEvent(
-                        BottomSheetDialogViewEvent.CopyToClipboard
-                    )
-                }
+                wifi_btn_connect.clickToEvent(_viewEvent, ConnectWiFi)
+                wifi_btn_copy_password.clickToEvent(_viewEvent, CopyToClipboard)
             }
             Barcode.TYPE_TEXT -> {
                 bottom_sheet_fl_type_container.apply {
                     layoutResource = R.layout.type_text
                     inflate()
                 }
-                text_btn_copy.setOnClickListener {
-                    _viewEvent.sendEvent(
-                        BottomSheetDialogViewEvent.CopyToClipboard
-                    )
-                }
+                text_btn_copy.clickToEvent(_viewEvent, CopyToClipboard)
             }
         }
     }
