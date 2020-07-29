@@ -21,8 +21,9 @@ import com.example.qr.extensions.toVisibleOrGone
 import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.*
 import com.example.qr.utils.Event
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.Barcode.*
 import kotlinx.android.synthetic.main.bottom_sheet.*
+import kotlinx.android.synthetic.main.type_contact.*
 import kotlinx.android.synthetic.main.type_phone.*
 import kotlinx.android.synthetic.main.type_text.*
 import kotlinx.android.synthetic.main.type_url.*
@@ -59,7 +60,7 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
 
     private fun prepareTypeLayout(barcodeType: Int) {
         when (barcodeType) {
-            Barcode.TYPE_WIFI -> {
+            TYPE_WIFI -> {
                 bottom_sheet_fl_type_container.apply {
                     layoutResource = R.layout.type_wifi
                     inflate()
@@ -67,14 +68,14 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 wifi_btn_connect.clickToEvent(_viewEvent, ConnectWiFi)
                 wifi_btn_copy_password.clickToEvent(_viewEvent, CopyToClipboard)
             }
-            Barcode.TYPE_TEXT -> {
+            TYPE_TEXT -> {
                 bottom_sheet_fl_type_container.apply {
                     layoutResource = R.layout.type_text
                     inflate()
                 }
                 text_btn_copy.clickToEvent(_viewEvent, CopyToClipboard)
             }
-            Barcode.TYPE_URL -> {
+            TYPE_URL -> {
                 bottom_sheet_fl_type_container.apply {
                     layoutResource = R.layout.type_url
                     inflate()
@@ -82,7 +83,7 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 url_btn_copy.clickToEvent(_viewEvent, CopyToClipboard)
                 url_btn_open_link.clickToEvent(_viewEvent, OpenInBrowser)
             }
-            Barcode.TYPE_PHONE -> {
+            TYPE_PHONE -> {
                 bottom_sheet_fl_type_container.apply {
                     layoutResource = R.layout.type_phone
                     inflate()
@@ -90,6 +91,13 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 phone_btn_copy.clickToEvent(_viewEvent, CopyToClipboard)
                 phone_btn_add_to_contacts.clickToEvent(_viewEvent, AddPhoneToContacts)
                 phone_btn_call.clickToEvent(_viewEvent, Dial)
+            }
+            TYPE_CONTACT_INFO -> {
+                bottom_sheet_fl_type_container.apply {
+                    layoutResource = R.layout.type_contact
+                    inflate()
+                }
+                contact_btn_add_to_contacts.clickToEvent(_viewEvent, AddContact)
             }
         }
     }
@@ -129,6 +137,14 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                     Intent(Intent.ACTION_DIAL, Uri.parse("tel:${viewEffect.phone}"))
                 startActivity(intent)
             }
+            is BottomSheetDialogViewEffect.AddContact -> {
+                val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+                    type = ContactsContract.Contacts.CONTENT_TYPE
+                    putExtra(ContactsContract.Intents.Insert.PHONE, viewEffect.barcodeContact.phone)
+                    putExtra(ContactsContract.Intents.Insert.NAME, viewEffect.barcodeContact.name)
+                }
+                startActivity(intent)
+            }
         }
     }
 
@@ -137,19 +153,22 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
             bottom_sheet_barcode_type.text = viewState.barcodeTypeName
 
             when (viewState.barcodeType) {
-                Barcode.TYPE_WIFI -> {
+                TYPE_WIFI -> {
                     wifi_ssid.text = viewState.wifiSsid
                     wifi_password.text = viewState.wifiPassword
                     wifi_btn_connect.toVisibleOrGone(viewState.androidVersionLessQ)
                 }
-                Barcode.TYPE_TEXT -> {
+                TYPE_TEXT -> {
                     text_text.text = viewState.barcodeText
                 }
-                Barcode.TYPE_URL -> {
+                TYPE_URL -> {
                     url_address.text = viewState.url
                 }
-                Barcode.TYPE_PHONE -> {
+                TYPE_PHONE -> {
                     phone_number.text = viewState.phone
+                }
+                TYPE_CONTACT_INFO -> {
+                    contact_name.text = viewState.barcodeContact.name
                 }
             }
         }

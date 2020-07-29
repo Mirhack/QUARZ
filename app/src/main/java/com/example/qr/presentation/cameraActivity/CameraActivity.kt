@@ -23,6 +23,7 @@ import com.example.qr.di.imageAnalysingModule
 import com.example.qr.extensions.savePDO
 import com.example.qr.extensions.sendEvent
 import com.example.qr.imageProcessing.ImageAnalyzer
+import com.example.qr.model.BarcodeContact
 import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialog
 import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogPDO
 import com.example.qr.presentation.cameraActivity.CameraActivityViewEvent.*
@@ -102,7 +103,11 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
                     wifiSsid = wifi?.ssid ?: "",
                     wifiPassword = wifi?.password ?: "",
                     url = url?.url ?: "",
-                    phone = phone?.number ?: ""
+                    phone = phone?.number ?: "",
+                    barcodeContact = BarcodeContact(
+                        contactInfo?.name?.formattedName ?: "",
+                        contactInfo?.phones?.getOrNull(0)?.number ?: ""
+                    )
                 )
             }
         )

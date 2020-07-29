@@ -44,11 +44,13 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                             TYPE_TEXT -> context.getString(R.string.text_type_title)
                             TYPE_URL -> context.getString(R.string.url_type_title)
                             TYPE_PHONE -> context.getString(R.string.phone_type_title)
+                            TYPE_CONTACT_INFO -> context.getString(R.string.contact_type_title)
                             else -> context.getString(R.string.unknown_type_title)
                         },
                         androidVersionLessQ = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q,
                         url = url,
-                        phone = phone
+                        phone = phone,
+                        barcodeContact = barcodeContact
                     )
                 }
             )
@@ -92,6 +94,13 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                 _viewEffect.sendEvent(
                     BottomSheetDialogViewEffect.Dial(viewState.value?.phone ?: "")
                 )
+            }
+            is AddContact -> {
+                viewState.value?.barcodeContact?.let {
+                    _viewEffect.sendEvent(
+                        BottomSheetDialogViewEffect.AddContact(it)
+                    )
+                }
             }
         }
     }
