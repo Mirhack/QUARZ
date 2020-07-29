@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.qr.wifiConnection
 
 import android.content.Context
@@ -7,7 +9,6 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-
 
 class WifiConnectionManager : KoinComponent {
     private val context: Context by inject()
