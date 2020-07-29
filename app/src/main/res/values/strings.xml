@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">QR</string>
+    <string name="password_title">Password</string>
+    <string name="ssid_title">SSID</string>
+    <string name="barcode_type_title">Barcode Type</string>
+    <string name="action_connect">Connect</string>
+    <string name="action_copy_password">Copy password</string>
+    <string name="action_copy">Copy</string>
 </resources>

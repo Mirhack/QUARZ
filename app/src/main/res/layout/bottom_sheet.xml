@@ -9,51 +9,10 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/bottom_sheet_wifi_password_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Password"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_wifi_ssid_title" />
-
-    <TextView
-        android:id="@+id/bottom_sheet_wifi_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/bottom_sheet_barcode_type"
-        app:layout_constraintTop_toTopOf="@+id/bottom_sheet_wifi_password_title"
-        tools:text="Hotspot password" />
-
-    <TextView
-        android:id="@+id/bottom_sheet_wifi_ssid_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="SSID"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_barcode_type_title" />
-
-    <TextView
-        android:id="@+id/bottom_sheet_wifi_ssid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/bottom_sheet_barcode_type"
-        app:layout_constraintTop_toTopOf="@+id/bottom_sheet_wifi_ssid_title"
-        tools:text="Hotspot name" />
-
-    <TextView
         android:id="@+id/bottom_sheet_barcode_type_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Barcode Type"
+        android:text="@string/barcode_type_title"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,25 +28,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="WIFI" />
 
-    <TextView
-        android:id="@+id/bottom_sheet_barcode_text"
+    <ViewStub
+        android:id="@+id/bottom_sheet_fl_type_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_wifi_password_title" />
-
-    <Button
-        android:id="@+id/bottom_sheet_btn_copy_connect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_barcode_text"
-        tools:text="Connect or Copy password" />
+        app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_barcode_type"
+        tools:layout_editor_absoluteX="16dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

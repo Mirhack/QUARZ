@@ -10,8 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.qr.extensions.send
 import com.example.qr.extensions.sendEvent
-import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.ConnectClick
-import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.Init
+import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.*
 import com.example.qr.utils.Event
 import com.example.qr.wifiConnection.WifiConnectionManager
 import com.google.mlkit.vision.barcode.Barcode
@@ -45,7 +44,7 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                     androidVersionLessQ = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
                 )
             )
-            is ConnectClick -> {
+            is ConnectWiFi -> {
                 if (viewState.value!!.androidVersionLessQ) {
                     //Connect to WiFi Network
                     val wifiConnectionManager = WifiConnectionManager()
@@ -53,13 +52,14 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                         viewState.value?.wifiSsid ?: "",
                         viewState.value?.wifiPassword ?: ""
                     )
-                } else {
-                    //Copy password
-                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip = ClipData.newPlainText("copiedText", viewState.value?.wifiPassword)
-                    clipboard.setPrimaryClip(clip)
-                    _viewEffect.sendEvent(BottomSheetDialogViewEffect.ShowToast("Copied to clipboard"))
                 }
+            }
+            is CopyToClipboard -> {
+                val clipboard =
+                    context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("copiedText", viewState.value?.wifiPassword)
+                clipboard.setPrimaryClip(clip)
+                _viewEffect.sendEvent(BottomSheetDialogViewEffect.ShowToast("Copied to clipboard"))
             }
         }
     }
