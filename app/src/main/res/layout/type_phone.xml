@@ -10,6 +10,9 @@
 
 
     <TextView
+        android:drawableStart="@drawable/ic_call_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@android:color/white"
         android:id="@+id/phone_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

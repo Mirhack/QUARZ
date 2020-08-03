@@ -6,7 +6,6 @@ import com.example.qr.model.BarcodeContact
 data class BottomSheetDialogViewState(
     val isPredefinedValue: Boolean = false,
     val barcodeText: String,
-    val barcodeTypeName: String,
     val barcodeType: Int,
     val wifiSsid: String,
     val wifiPassword: String,

@@ -8,7 +8,6 @@ import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.qr.R
 import com.example.qr.extensions.send
 import com.example.qr.extensions.sendEvent
 import com.example.qr.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.*
@@ -39,14 +38,6 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                         wifiSsid = wifiSsid,
                         wifiPassword = wifiPassword,
                         barcodeType = barcodeType,
-                        barcodeTypeName = when (barcodeType) {
-                            TYPE_WIFI -> context.getString(R.string.wifi_type_title)
-                            TYPE_TEXT -> context.getString(R.string.text_type_title)
-                            TYPE_URL -> context.getString(R.string.url_type_title)
-                            TYPE_PHONE -> context.getString(R.string.phone_type_title)
-                            TYPE_CONTACT_INFO -> context.getString(R.string.contact_type_title)
-                            else -> context.getString(R.string.unknown_type_title)
-                        },
                         androidVersionLessQ = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q,
                         url = url,
                         phone = phone,

@@ -142,11 +142,17 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                     type = ContactsContract.Contacts.CONTENT_TYPE
                     putExtra(ContactsContract.Intents.Insert.NAME, viewEffect.barcodeContact.name)
                     putExtra(ContactsContract.Intents.Insert.PHONE, viewEffect.barcodeContact.phone)
-                    putExtra(ContactsContract.Intents.Insert.POSTAL, viewEffect.barcodeContact.address)
+                    putExtra(
+                        ContactsContract.Intents.Insert.POSTAL,
+                        viewEffect.barcodeContact.address
+                    )
                     putExtra(ContactsContract.Intents.Insert.EMAIL, viewEffect.barcodeContact.email)
                     putExtra(ContactsContract.Intents.Insert.NOTES, viewEffect.barcodeContact.url)
                     putExtra(ContactsContract.Intents.Insert.COMPANY, viewEffect.barcodeContact.org)
-                    putExtra(ContactsContract.Intents.Insert.JOB_TITLE, viewEffect.barcodeContact.title)
+                    putExtra(
+                        ContactsContract.Intents.Insert.JOB_TITLE,
+                        viewEffect.barcodeContact.title
+                    )
                 }
                 startActivity(intent)
             }
@@ -155,7 +161,6 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
 
     private fun onViewStateChanged(viewState: BottomSheetDialogViewState) {
         if (viewState.isPredefinedValue) {
-            bottom_sheet_barcode_type.text = viewState.barcodeTypeName
 
             when (viewState.barcodeType) {
                 TYPE_WIFI -> {
@@ -173,13 +178,36 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                     phone_number.text = viewState.phone
                 }
                 TYPE_CONTACT_INFO -> {
-                    contact_name.text = viewState.barcodeContact.name
-                    contact_phone.text = viewState.barcodeContact.phone
-                    contact_address.text = viewState.barcodeContact.address
-                    contact_email.text = viewState.barcodeContact.email
-                    contact_url.text = viewState.barcodeContact.url
-                    contact_company_name.text = viewState.barcodeContact.org
-                    contact_company_title.text = viewState.barcodeContact.title
+                    viewState.barcodeContact.apply {
+                        contact_name.apply {
+                            text = name
+                            toVisibleOrGone(name.isNotEmpty())
+                        }
+                        contact_phone.apply {
+                            text = phone
+                            toVisibleOrGone(phone.isNotEmpty())
+                        }
+                        contact_address.apply {
+                            text = address
+                            toVisibleOrGone(address.isNotEmpty())
+                        }
+                        contact_email.apply {
+                            text = email
+                            toVisibleOrGone(email.isNotEmpty())
+                        }
+                        contact_url.apply {
+                            text = url
+                            toVisibleOrGone(url.isNotEmpty())
+                        }
+                        contact_company_name.apply {
+                            text = org
+                            toVisibleOrGone(org.isNotEmpty())
+                        }
+                        contact_company_title.apply {
+                            text = title
+                            toVisibleOrGone(title.isNotEmpty())
+                        }
+                    }
                 }
             }
         }

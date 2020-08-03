@@ -8,31 +8,11 @@
     android:fitsSystemWindows="true"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/bottom_sheet_barcode_type_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/barcode_type_title"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/bottom_sheet_barcode_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/bottom_sheet_barcode_type_title"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="WIFI" />
-
     <ViewStub
         android:id="@+id/bottom_sheet_fl_type_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_barcode_type"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="16dp" />
 
 
