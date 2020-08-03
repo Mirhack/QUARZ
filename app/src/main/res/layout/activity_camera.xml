@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.example.qr.imageProcessing.GraphicOverlay
+    <com.mirhack.quarz.imageProcessing.GraphicOverlay
         android:id="@+id/graphic_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
