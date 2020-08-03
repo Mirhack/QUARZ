@@ -52,7 +52,6 @@
         android:layout_marginTop="16dp"
         android:padding="0dp"
         app:srcCompat="@drawable/ic_call_24"
-        android:text="@string/action_call"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone_btn_copy" />

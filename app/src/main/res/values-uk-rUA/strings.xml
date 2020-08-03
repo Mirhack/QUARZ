@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_connect">Підключитися</string>
+    <string name="action_copy_password">Копіювати пароль</string>
+    <string name="action_copy">Копіювати</string>
+    <string name="action_open_in_browser">Відкрити</string>
+    <string name="action_add_to_contacts">Додати</string>
+    <string name="message_copied">Скопійовано в буфер обміну</string>
+</resources>

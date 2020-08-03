@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_connect">Подключиться</string>
+    <string name="action_copy_password">Копировать пароль</string>
+    <string name="action_copy">Копировать</string>
+    <string name="action_open_in_browser">Открыть</string>
+    <string name="action_add_to_contacts">Добавить</string>
+    <string name="message_copied">Скопировано в буфер обмена</string>
+</resources>

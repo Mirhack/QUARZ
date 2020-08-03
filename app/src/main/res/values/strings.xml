@@ -1,10 +1,9 @@
 <resources>
-    <string name="app_name">QR</string>
+    <string name="app_name" translatable="false">Quarz</string>
     <string name="action_connect">Connect</string>
     <string name="action_copy_password">Copy password</string>
     <string name="action_copy">Copy</string>
     <string name="action_open_in_browser">Open in Browser</string>
     <string name="action_add_to_contacts">Add to contacts</string>
-    <string name="action_call">Call</string>
     <string name="message_copied">Copied to clipboard</string>
 </resources>
