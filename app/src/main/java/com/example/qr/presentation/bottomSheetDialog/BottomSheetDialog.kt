@@ -140,8 +140,13 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
             is BottomSheetDialogViewEffect.AddContact -> {
                 val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
                     type = ContactsContract.Contacts.CONTENT_TYPE
-                    putExtra(ContactsContract.Intents.Insert.PHONE, viewEffect.barcodeContact.phone)
                     putExtra(ContactsContract.Intents.Insert.NAME, viewEffect.barcodeContact.name)
+                    putExtra(ContactsContract.Intents.Insert.PHONE, viewEffect.barcodeContact.phone)
+                    putExtra(ContactsContract.Intents.Insert.POSTAL, viewEffect.barcodeContact.address)
+                    putExtra(ContactsContract.Intents.Insert.EMAIL, viewEffect.barcodeContact.email)
+                    putExtra(ContactsContract.Intents.Insert.NOTES, viewEffect.barcodeContact.url)
+                    putExtra(ContactsContract.Intents.Insert.COMPANY, viewEffect.barcodeContact.org)
+                    putExtra(ContactsContract.Intents.Insert.JOB_TITLE, viewEffect.barcodeContact.title)
                 }
                 startActivity(intent)
             }
@@ -169,6 +174,12 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 }
                 TYPE_CONTACT_INFO -> {
                     contact_name.text = viewState.barcodeContact.name
+                    contact_phone.text = viewState.barcodeContact.phone
+                    contact_address.text = viewState.barcodeContact.address
+                    contact_email.text = viewState.barcodeContact.email
+                    contact_url.text = viewState.barcodeContact.url
+                    contact_company_name.text = viewState.barcodeContact.org
+                    contact_company_title.text = viewState.barcodeContact.title
                 }
             }
         }

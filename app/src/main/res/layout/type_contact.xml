@@ -13,12 +13,97 @@
         android:id="@+id/contact_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_person_pin_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@android:color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Contact name" />
 
+
+    <TextView
+        android:id="@+id/contact_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_call_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_name"
+        tools:text="Contact phone" />
+
+
+    <TextView
+        android:id="@+id/contact_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_location_on_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_phone"
+        tools:text="Contact address" />
+
+
+       <TextView
+        android:id="@+id/contact_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_email_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_address"
+        tools:text="Contact email" />
+
+    <TextView
+        android:id="@+id/contact_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_email_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_email"
+        tools:text="Contact url" />
+
+
+
+    <TextView
+        android:id="@+id/contact_company_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_domain_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_url"
+        tools:text="Company name" />
+
+    <TextView
+        android:id="@+id/contact_company_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_work_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact_company_name"
+        tools:text="Company position" />
 
     <Button
         android:id="@+id/contact_btn_add_to_contacts"
@@ -28,6 +113,6 @@
         android:text="@string/action_add_to_contacts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contact_name" />
+        app:layout_constraintTop_toBottomOf="@+id/contact_company_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -106,7 +106,12 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
                     phone = phone?.number ?: "",
                     barcodeContact = BarcodeContact(
                         contactInfo?.name?.formattedName ?: "",
-                        contactInfo?.phones?.getOrNull(0)?.number ?: ""
+                        contactInfo?.phones?.getOrNull(0)?.number ?: "",
+                        contactInfo?.addresses?.getOrNull(0)?.addressLines?.joinToString() ?:"",
+                        contactInfo?.emails?.getOrNull(0)?.address ?: "",
+                        contactInfo?.urls?.getOrNull(0) ?: "",
+                        contactInfo?.organization ?: "",
+                        contactInfo?.title ?:""
                     )
                 )
             }
