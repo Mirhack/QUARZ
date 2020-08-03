@@ -22,7 +22,7 @@ class WifiConnectionManager : KoinComponent {
             wifiConfig.SSID = String.format("\"%s\"", SSID)
             wifiConfig.preSharedKey = String.format("\"%s\"", password)
 
-            wifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+            wifiConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN)
 
             if (!wifiManager.isWifiEnabled)
                 wifiManager.isWifiEnabled = true
