@@ -1,6 +1,7 @@
 package com.mountaintechnology.quarz.presentation.bottomSheetDialog
 
 import com.mountaintechnology.quarz.model.BarcodeContact
+import com.mountaintechnology.quarz.model.SMS
 
 
 data class BottomSheetDialogViewState(
@@ -12,6 +13,7 @@ data class BottomSheetDialogViewState(
     val url: String,
     val phone: String,
     val barcodeContact: BarcodeContact,
+    val sms: SMS,
     val androidVersionLessQ: Boolean
 )
 
@@ -22,6 +24,7 @@ sealed class BottomSheetDialogViewEvent {
     object OpenInBrowser : BottomSheetDialogViewEvent()
     object AddPhoneToContacts : BottomSheetDialogViewEvent()
     object AddContact : BottomSheetDialogViewEvent()
+    object SendSMS : BottomSheetDialogViewEvent()
     object Dial : BottomSheetDialogViewEvent()
 }
 
@@ -30,5 +33,6 @@ sealed class BottomSheetDialogViewEffect {
     data class OpenInBrowser(val url: String) : BottomSheetDialogViewEffect()
     data class AddPhoneContact(val phone: String) : BottomSheetDialogViewEffect()
     data class AddContact(val barcodeContact: BarcodeContact) : BottomSheetDialogViewEffect()
+    data class SendSMS(val sms: SMS) : BottomSheetDialogViewEffect()
     data class Dial(val phone: String) : BottomSheetDialogViewEffect()
 }

@@ -25,6 +25,7 @@ import com.mountaintechnology.quarz.extensions.savePDO
 import com.mountaintechnology.quarz.extensions.sendEvent
 import com.mountaintechnology.quarz.imageProcessing.ImageAnalyzer
 import com.mountaintechnology.quarz.model.BarcodeContact
+import com.mountaintechnology.quarz.model.SMS
 import com.mountaintechnology.quarz.presentation.bottomSheetDialog.BottomSheetDialog
 import com.mountaintechnology.quarz.presentation.bottomSheetDialog.BottomSheetDialogPDO
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewEvent.*
@@ -107,12 +108,13 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
                     barcodeContact = BarcodeContact(
                         contactInfo?.name?.formattedName ?: "",
                         contactInfo?.phones?.getOrNull(0)?.number ?: "",
-                        contactInfo?.addresses?.getOrNull(0)?.addressLines?.joinToString() ?:"",
+                        contactInfo?.addresses?.getOrNull(0)?.addressLines?.joinToString() ?: "",
                         contactInfo?.emails?.getOrNull(0)?.address ?: "",
                         contactInfo?.urls?.getOrNull(0) ?: "",
                         contactInfo?.organization ?: "",
-                        contactInfo?.title ?:""
-                    )
+                        contactInfo?.title ?: ""
+                    ),
+                    sms = SMS(sms?.phoneNumber ?: "", sms?.message ?: "")
                 )
             }
         )

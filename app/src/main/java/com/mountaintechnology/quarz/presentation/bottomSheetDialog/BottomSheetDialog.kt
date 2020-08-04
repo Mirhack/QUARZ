@@ -25,6 +25,7 @@ import com.mountaintechnology.quarz.utils.Event
 import kotlinx.android.synthetic.main.bottom_sheet.*
 import kotlinx.android.synthetic.main.type_contact.*
 import kotlinx.android.synthetic.main.type_phone.*
+import kotlinx.android.synthetic.main.type_sms.*
 import kotlinx.android.synthetic.main.type_text.*
 import kotlinx.android.synthetic.main.type_url.*
 import kotlinx.android.synthetic.main.type_wifi.*
@@ -99,6 +100,14 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 }
                 contact_btn_add_to_contacts.clickToEvent(_viewEvent, AddContact)
             }
+            TYPE_SMS -> {
+                bottom_sheet_fl_type_container.apply {
+                    layoutResource = R.layout.type_sms
+                    inflate()
+                }
+                sms_btn_send.clickToEvent(_viewEvent, SendSMS)
+
+            }
         }
     }
 
@@ -135,6 +144,14 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
             is BottomSheetDialogViewEffect.Dial -> {
                 val intent =
                     Intent(Intent.ACTION_DIAL, Uri.parse("tel:${viewEffect.phone}"))
+                startActivity(intent)
+            }
+            is BottomSheetDialogViewEffect.SendSMS -> {
+                val intent =
+                    Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:${viewEffect.sms.phone}")).apply {
+                        putExtra("sms_body", viewEffect.sms.text)
+                    }
+
                 startActivity(intent)
             }
             is BottomSheetDialogViewEffect.AddContact -> {
@@ -176,6 +193,10 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 }
                 TYPE_PHONE -> {
                     phone_number.text = viewState.phone
+                }
+                TYPE_SMS -> {
+                    sms_phone_number.text = viewState.sms.phone
+                    sms_message.text = viewState.sms.text
                 }
                 TYPE_CONTACT_INFO -> {
                     viewState.barcodeContact.apply {

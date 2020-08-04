@@ -42,7 +42,8 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                         androidVersionLessQ = Build.VERSION.SDK_INT < Build.VERSION_CODES.Q,
                         url = url,
                         phone = phone,
-                        barcodeContact = barcodeContact
+                        barcodeContact = barcodeContact,
+                        sms = sms
                     )
                 }
             )
@@ -91,6 +92,13 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                 viewState.value?.barcodeContact?.let {
                     _viewEffect.sendEvent(
                         BottomSheetDialogViewEffect.AddContact(it)
+                    )
+                }
+            }
+            is SendSMS -> {
+                viewState.value?.sms?.let {
+                    _viewEffect.sendEvent(
+                        BottomSheetDialogViewEffect.SendSMS(it)
                     )
                 }
             }

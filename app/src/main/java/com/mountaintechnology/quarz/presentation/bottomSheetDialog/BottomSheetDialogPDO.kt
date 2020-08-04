@@ -2,6 +2,7 @@ package com.mountaintechnology.quarz.presentation.bottomSheetDialog
 
 import android.os.Parcelable
 import com.mountaintechnology.quarz.model.BarcodeContact
+import com.mountaintechnology.quarz.model.SMS
 import kotlinx.android.parcel.Parcelize
 
 //Parcelable Data Object
@@ -13,6 +14,7 @@ data class BottomSheetDialogPDO(
     val wifiPassword: String,
     val url: String,
     val phone: String,
-    val barcodeContact: BarcodeContact
+    val barcodeContact: BarcodeContact,
+    val sms: SMS
 ) : Parcelable
 
