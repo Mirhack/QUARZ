@@ -68,7 +68,7 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                 wifi_btn_connect.clickToEvent(_viewEvent, ConnectWiFi)
                 wifi_btn_copy_password.clickToEvent(_viewEvent, CopyToClipboard)
             }
-            TYPE_TEXT -> {
+            TYPE_TEXT, TYPE_PRODUCT, TYPE_ISBN -> {
                 bottom_sheet_fl_type_container.apply {
                     layoutResource = R.layout.type_text
                     inflate()
@@ -168,7 +168,7 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
                     wifi_password.text = viewState.wifiPassword
                     wifi_btn_connect.toVisibleOrGone(viewState.androidVersionLessQ)
                 }
-                TYPE_TEXT -> {
+                TYPE_TEXT, TYPE_PRODUCT, TYPE_ISBN -> {
                     text_text.text = viewState.barcodeText
                 }
                 TYPE_URL -> {

@@ -61,7 +61,7 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
                     context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val text = when (viewState.value?.barcodeType) {
                     TYPE_WIFI -> viewState.value?.wifiPassword ?: ""
-                    TYPE_TEXT -> viewState.value?.barcodeText ?: ""
+                    TYPE_TEXT, TYPE_PRODUCT, TYPE_ISBN -> viewState.value?.barcodeText ?: ""
                     TYPE_URL -> viewState.value?.url ?: ""
                     TYPE_PHONE -> viewState.value?.phone ?: ""
                     else -> ""

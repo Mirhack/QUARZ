@@ -62,7 +62,9 @@ class ImageAnalyzer(
                                     drawQrRect(boundingBox)
                                 } ?: graphicOverlay.clear()
 
-                                eventEmitter.sendEvent(BarcodeScanned(it))
+                                if (!it.displayValue.isNullOrEmpty())
+                                    eventEmitter.sendEvent(BarcodeScanned(it))
+
                                 coroutineScope.launch(IO) {
                                     delay(500)
                                     graphicOverlay.clear()
