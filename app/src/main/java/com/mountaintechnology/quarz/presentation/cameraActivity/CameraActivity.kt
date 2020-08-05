@@ -21,13 +21,13 @@ import com.google.mlkit.vision.barcode.Barcode
 import com.mountaintechnology.quarz.R
 import com.mountaintechnology.quarz.di.cameraModule
 import com.mountaintechnology.quarz.di.imageAnalysingModule
-import com.mountaintechnology.quarz.extensions.savePDO
+import com.mountaintechnology.quarz.extensions.saveDTO
 import com.mountaintechnology.quarz.extensions.sendEvent
 import com.mountaintechnology.quarz.imageProcessing.ImageAnalyzer
 import com.mountaintechnology.quarz.model.BarcodeContact
 import com.mountaintechnology.quarz.model.SMS
 import com.mountaintechnology.quarz.presentation.bottomSheetDialog.BottomSheetDialog
-import com.mountaintechnology.quarz.presentation.bottomSheetDialog.BottomSheetDialogPDO
+import com.mountaintechnology.quarz.presentation.bottomSheetDialog.BottomSheetDialogDTO
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewEvent.*
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewModel.Companion.REQUEST_CODE_PERMISSIONS
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewModel.Companion.REQUIRED_PERMISSIONS
@@ -64,10 +64,17 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camera)
-
         loadKoinModules(listOf(imageAnalysingModule, cameraModule))
 
         _viewEvent.sendEvent(Init)
+
+        //retain dialog listener
+        if (savedInstanceState != null) {
+            val dialog = supportFragmentManager.findFragmentByTag("dialog") as BottomSheetDialog
+            dialog.onDismissListener = {
+                _viewEvent.sendEvent(BottomSheetDialogDismissed)
+            }
+        }
     }
 
     override fun onResume() {
@@ -96,9 +103,9 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private fun getBarcodeBundle(barcode: Barcode): Bundle {
-        return Bundle().savePDO(
+        return Bundle().saveDTO(
             barcode.run {
-                BottomSheetDialogPDO(
+                BottomSheetDialogDTO(
                     barcodeText = displayValue ?: "",
                     barcodeType = valueType,
                     wifiSsid = wifi?.ssid ?: "",
@@ -121,7 +128,6 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private fun onViewStateChanged(viewState: CameraActivityViewState) {
-        imageAnalyzer?.enabled = viewState.scanNextCode
     }
 
     private fun showBottomSheetDialog(bundle: Bundle) {
@@ -158,7 +164,7 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
         cameraProviderFuture.addListener(Runnable {
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            imageAnalyzer = ImageAnalyzer(this, graphic_overlay, _viewEvent)
+            imageAnalyzer = ImageAnalyzer(this, graphic_overlay, _viewEvent, viewModel.viewState)
 
             imageAnalysis.setAnalyzer(cameraExecutor, imageAnalyzer!!)
 
@@ -182,7 +188,6 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
     override fun onDestroy() {
         super.onDestroy()
         coroutineContext.cancelChildren()
-
     }
 
     companion object {

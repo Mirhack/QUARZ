@@ -7,11 +7,11 @@ const val EXTRA_DATA = "EXTRA_DATA"
 
 
 
-fun <T : Parcelable> Bundle?.loadPDO(): T? {
+fun <T : Parcelable> Bundle?.loadDTO(): T? {
     return this?.getParcelable(EXTRA_DATA)
 }
 
-fun <T : Parcelable> Bundle.savePDO(data: T?): Bundle {
+fun <T : Parcelable> Bundle.saveDTO(data: T?): Bundle {
     this.putParcelable(EXTRA_DATA, data)
     return this
 }

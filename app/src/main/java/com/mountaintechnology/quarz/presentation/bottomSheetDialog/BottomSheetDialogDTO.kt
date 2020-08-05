@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 
 //Parcelable Data Object
 @Parcelize
-data class BottomSheetDialogPDO(
+data class BottomSheetDialogDTO(
     val barcodeText: String,
     val barcodeType: Int,
     val wifiSsid: String,

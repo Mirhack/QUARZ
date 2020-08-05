@@ -32,7 +32,7 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
     fun processEvent(event: BottomSheetDialogViewEvent?) {
         when (event) {
             is Init -> _viewState.send(
-                event.pdo.run {
+                event.dto.run {
                     BottomSheetDialogViewState(
                         isPredefinedValue = true,
                         barcodeText = barcodeText,

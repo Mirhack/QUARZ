@@ -18,7 +18,7 @@ data class BottomSheetDialogViewState(
 )
 
 sealed class BottomSheetDialogViewEvent {
-    data class Init(val pdo: BottomSheetDialogPDO) : BottomSheetDialogViewEvent()
+    data class Init(val dto: BottomSheetDialogDTO) : BottomSheetDialogViewEvent()
     object ConnectWiFi : BottomSheetDialogViewEvent()
     object CopyToClipboard : BottomSheetDialogViewEvent()
     object OpenInBrowser : BottomSheetDialogViewEvent()

@@ -173,6 +173,17 @@ class GraphicOverlay(
         postInvalidate()
     }
 
+
+    /**
+     * Replace all existing graphics with current
+     */
+    fun replace(graphic: Graphic) {
+        clear()
+        add(graphic)
+        postInvalidate()
+    }
+
+
     /**
      * Sets the source information of the image being processed by detectors, including size and
      * whether it is flipped, which informs how to transform image coordinates later.

@@ -40,7 +40,7 @@ class CameraActivityViewModel(application: Application) : AndroidViewModel(appli
         } else {
             _viewEffect.sendEvent(RequestPermissions)
         }
-        _viewState.send(CameraActivityViewState())
+        _viewState.send(viewState.value ?: CameraActivityViewState())
     }
 
     private fun scanNextCode() {

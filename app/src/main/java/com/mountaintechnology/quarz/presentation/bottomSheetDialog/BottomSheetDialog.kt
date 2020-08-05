@@ -17,7 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.mlkit.vision.barcode.Barcode.*
 import com.mountaintechnology.quarz.R
 import com.mountaintechnology.quarz.extensions.clickToEvent
-import com.mountaintechnology.quarz.extensions.loadPDO
+import com.mountaintechnology.quarz.extensions.loadDTO
 import com.mountaintechnology.quarz.extensions.sendEvent
 import com.mountaintechnology.quarz.extensions.toVisibleOrGone
 import com.mountaintechnology.quarz.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.*
@@ -53,7 +53,7 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.loadPDO<BottomSheetDialogPDO>()?.let {
+        arguments?.loadDTO<BottomSheetDialogDTO>()?.let {
             prepareTypeLayout(it.barcodeType)
             _viewEvent.sendEvent(Init(it))
         }
