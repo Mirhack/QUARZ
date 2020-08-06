@@ -7,6 +7,6 @@ fun <T>MutableLiveData<Event<T>>.sendEvent(event: T): Unit {
     this.value = Event(event)
 }
 
-fun <T>MutableLiveData<T>.send(event: T): Unit {
+fun <T>MutableLiveData<T>.update(event: T): Unit {
     this.value = event
 }

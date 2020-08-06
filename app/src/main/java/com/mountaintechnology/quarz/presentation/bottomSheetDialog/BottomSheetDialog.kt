@@ -30,13 +30,13 @@ import kotlinx.android.synthetic.main.type_text.*
 import kotlinx.android.synthetic.main.type_url.*
 import kotlinx.android.synthetic.main.type_wifi.*
 
-class BottomSheetDialog : BottomSheetDialogFragment() {
+class BottomSheetDialog(
+    private val dialogDismissListener: DialogDismissListener?
+) : BottomSheetDialogFragment() {
     private val viewEvent: LiveData<Event<BottomSheetDialogViewEvent>> get() = _viewEvent
     private val _viewEvent = MutableLiveData<Event<BottomSheetDialogViewEvent>>()
 
     private val viewModel: BottomSheetDialogViewModel by viewModels()
-
-    var onDismissListener: (() -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -113,7 +113,7 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        onDismissListener?.invoke()
+        dialogDismissListener?.onDialogDismiss()
     }
 
     override fun onResume() {
@@ -233,6 +233,11 @@ class BottomSheetDialog : BottomSheetDialogFragment() {
             }
         }
     }
+
+    interface DialogDismissListener {
+        fun onDialogDismiss()
+    }
+
 }
 
 

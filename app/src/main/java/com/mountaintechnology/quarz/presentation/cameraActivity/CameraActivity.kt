@@ -21,6 +21,8 @@ import com.google.mlkit.vision.barcode.Barcode
 import com.mountaintechnology.quarz.R
 import com.mountaintechnology.quarz.di.cameraModule
 import com.mountaintechnology.quarz.di.imageAnalysingModule
+import com.mountaintechnology.quarz.extensions.clickToEvent
+import com.mountaintechnology.quarz.extensions.rotate
 import com.mountaintechnology.quarz.extensions.saveDTO
 import com.mountaintechnology.quarz.extensions.sendEvent
 import com.mountaintechnology.quarz.imageProcessing.ImageAnalyzer
@@ -28,6 +30,7 @@ import com.mountaintechnology.quarz.model.BarcodeContact
 import com.mountaintechnology.quarz.model.SMS
 import com.mountaintechnology.quarz.presentation.bottomSheetDialog.BottomSheetDialog
 import com.mountaintechnology.quarz.presentation.bottomSheetDialog.BottomSheetDialogDTO
+import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewEffect.*
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewEvent.*
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewModel.Companion.REQUEST_CODE_PERMISSIONS
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewModel.Companion.REQUIRED_PERMISSIONS
@@ -43,13 +46,14 @@ import java.util.concurrent.ExecutorService
 import kotlin.coroutines.CoroutineContext
 
 
-class CameraActivity : AppCompatActivity(), CoroutineScope {
+class CameraActivity : AppCompatActivity(), CoroutineScope,
+    BottomSheetDialog.DialogDismissListener {
     private val viewEvent: LiveData<Event<CameraActivityViewEvent>> get() = _viewEvent
     private val _viewEvent = MutableLiveData<Event<CameraActivityViewEvent>>()
 
     private var camera: Camera? = null
     private var toast: Toast? = null
-
+    private lateinit var orientationListener: OrientationListener
     private var imageAnalyzer: ImageAnalyzer? = null
     private val viewModel: CameraActivityViewModel by viewModels()
     private val imageAnalysis: ImageAnalysis by inject()
@@ -68,13 +72,9 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
 
         _viewEvent.sendEvent(Init)
 
-        //retain dialog listener
-        if (savedInstanceState != null) {
-            val dialog = supportFragmentManager.findFragmentByTag("dialog") as BottomSheetDialog
-            dialog.onDismissListener = {
-                _viewEvent.sendEvent(BottomSheetDialogDismissed)
-            }
-        }
+        orientationListener = OrientationListener(this, _viewEvent)
+
+        camera_iv_flash.clickToEvent(_viewEvent, FlashToggle)
     }
 
     override fun onResume() {
@@ -84,21 +84,29 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
         viewModel.viewState.observe(this, Observer { onViewStateChanged(it) })
     }
 
+    override fun onStart() {
+        super.onStart()
+        orientationListener.enable()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        orientationListener.disable()
+    }
+
     private fun onViewEffect(event: CameraActivityViewEffect?) {
         when (event) {
-            is CameraActivityViewEffect.RequestPermissions -> {
+            is RequestPermissions -> {
                 ActivityCompat.requestPermissions(
                     this,
                     REQUIRED_PERMISSIONS,
                     REQUEST_CODE_PERMISSIONS
                 )
             }
-            is CameraActivityViewEffect.StartCamera -> startCamera()
-            is CameraActivityViewEffect.ShowToast -> showToast(event.text)
-            is CameraActivityViewEffect.ShowBottomSheetDialog -> showBottomSheetDialog(
-                getBarcodeBundle(event.barcode)
-            )
-            is CameraActivityViewEffect.Finish -> finish()
+            is StartCamera -> startCamera()
+            is ShowToast -> showToast(event.text)
+            is ShowBottomSheetDialog -> showBottomSheetDialog(getBarcodeBundle(event.barcode))
+            is Finish -> finish()
         }
     }
 
@@ -128,18 +136,26 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private fun onViewStateChanged(viewState: CameraActivityViewState) {
+        camera?.cameraControl?.enableTorch(viewState.isTorchEnabled)
+        if (viewState.isTorchEnabled)
+            camera_iv_flash.setImageResource(R.drawable.ic_flash_off_24)
+        else
+            camera_iv_flash.setImageResource(R.drawable.ic_flash_on_24)
+
+        camera_iv_flash.rotate(viewState.rotation)
     }
 
     private fun showBottomSheetDialog(bundle: Bundle) {
-        val dialog = BottomSheetDialog()
-        dialog.arguments = bundle
-
-        dialog.onDismissListener = {
-            _viewEvent.sendEvent(BottomSheetDialogDismissed)
+        BottomSheetDialog(this).apply {
+            arguments = bundle
+            show(supportFragmentManager, "dialog")
         }
-        dialog.show(supportFragmentManager, "dialog")
     }
 
+
+    /**
+     * Реализует быструю смену тостов
+     */
     private fun showToast(text: String) {
         val displayedText = toast?.let {
             ((it.view as LinearLayout).getChildAt(0) as TextView).text.toString()
@@ -185,6 +201,10 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
     }
 
 
+    override fun onDialogDismiss() {
+        _viewEvent.sendEvent(BottomSheetDialogDismissed)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         coroutineContext.cancelChildren()
@@ -192,6 +212,7 @@ class CameraActivity : AppCompatActivity(), CoroutineScope {
 
     companion object {
         private const val TAG = "CameraXBasic"
+
     }
 }
 

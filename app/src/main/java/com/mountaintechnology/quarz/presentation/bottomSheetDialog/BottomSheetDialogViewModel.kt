@@ -10,8 +10,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.mlkit.vision.barcode.Barcode.*
 import com.mountaintechnology.quarz.R
-import com.mountaintechnology.quarz.extensions.send
 import com.mountaintechnology.quarz.extensions.sendEvent
+import com.mountaintechnology.quarz.extensions.update
 import com.mountaintechnology.quarz.presentation.bottomSheetDialog.BottomSheetDialogViewEvent.*
 import com.mountaintechnology.quarz.utils.Event
 import com.mountaintechnology.quarz.wifiConnection.WifiConnectionManager
@@ -31,7 +31,7 @@ class BottomSheetDialogViewModel(application: Application) : AndroidViewModel(ap
 
     fun processEvent(event: BottomSheetDialogViewEvent?) {
         when (event) {
-            is Init -> _viewState.send(
+            is Init -> _viewState.update(
                 event.dto.run {
                     BottomSheetDialogViewState(
                         isPredefinedValue = true,

@@ -8,8 +8,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.mlkit.vision.barcode.Barcode
-import com.mountaintechnology.quarz.extensions.send
 import com.mountaintechnology.quarz.extensions.sendEvent
+import com.mountaintechnology.quarz.extensions.update
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewEffect.*
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewEvent.Init
 import com.mountaintechnology.quarz.presentation.cameraActivity.CameraActivityViewEvent.RequestPermissionsResult
@@ -29,9 +29,14 @@ class CameraActivityViewModel(application: Application) : AndroidViewModel(appli
             is RequestPermissionsResult -> permissionsRequested(event.requestCode)
             is CameraActivityViewEvent.BarcodeScanned -> barcodeScanned(event.barcode)
             is CameraActivityViewEvent.BottomSheetDialogDismissed -> scanNextCode()
+            is CameraActivityViewEvent.FlashToggle -> switchTorch()
+            is CameraActivityViewEvent.ScreenRotated -> rotateIcons(event.rotation)
         }
     }
 
+    private fun rotateIcons(rotation: Int) {
+        _viewState.update(viewState.value!!.copy(rotation = rotation))
+    }
 
     private fun init() {
         // Request camera permissions
@@ -40,11 +45,21 @@ class CameraActivityViewModel(application: Application) : AndroidViewModel(appli
         } else {
             _viewEffect.sendEvent(RequestPermissions)
         }
-        _viewState.send(viewState.value ?: CameraActivityViewState())
+        _viewState.update(viewState.value ?: CameraActivityViewState())
+    }
+
+
+    private fun switchTorch() {
+        _viewState.update(
+            viewState.value!!.copy(
+                isPredefinedValue = true,
+                isTorchEnabled = !viewState.value!!.isTorchEnabled
+            )
+        )
     }
 
     private fun scanNextCode() {
-        _viewState.send(viewState.value!!.copy(isPredefinedValue = true, scanNextCode = true))
+        _viewState.update(viewState.value!!.copy(isPredefinedValue = true, scanNextCode = true))
     }
 
     private fun permissionsRequested(requestCode: Int) {
@@ -59,7 +74,7 @@ class CameraActivityViewModel(application: Application) : AndroidViewModel(appli
     }
 
     private fun barcodeScanned(barcode: Barcode) {
-        _viewState.send(_viewState.value!!.copy(scanNextCode = false))
+        _viewState.update(_viewState.value!!.copy(scanNextCode = false))
         _viewEffect.sendEvent(ShowBottomSheetDialog(barcode))
     }
 
